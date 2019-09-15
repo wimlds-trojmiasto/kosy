@@ -1,9 +1,13 @@
 #!/usr/bin/env/python
 #
 # A script to download bird sound files from the www.xeno-canto.org archives with metadata
+#
+# Usage: python scr/data/xcdl.py searchTerm1 searchTerm2 ... searchTermN
+#
 # The program downloads all the files found with the search terms into
 # subdirectory data/xeno-canto-dataset/searchTerm.
 # and corresponding json files.
+
 # Karoliina Oksanen, 2014
 # Updated to python 3.7.4, Agnieszka Mikolajczyk, 2019
 # Added json download, and extraction of metadata from json, Agnieszka Mikolajczyk 2019
@@ -20,11 +24,11 @@ import os
 # Creates the subdirectory data/xeno-canto-dataset if necessary
 # Downloads and saves json files for number of pages in a query
 # and directory path to saved json's
-def save_json(searchTerms):
+def save_json(searchTerms, birdName):
     numPages=1
     page=1;
     #create a path to save json files and recordings
-    path = "data/xeno-canto-dataset/" + searchTerms.replace(':',' ')
+    path = "data/xeno-canto-dataset/" + birdName.replace(':',' ')
     if not os.path.exists(path):
         print("Creating subdirectory " + path + " for downloaded files...")
         os.makedirs(path)
@@ -72,31 +76,31 @@ def read_data(searchTerm, path):
 # downloads all sound files found with the search terms into xeno-canto directory
 # into catalogue named after the search term (i.e. Apus apus)
 # filename have two parts: the name of the bird in latin and ID number
-def download(searchTerms):
+def download(searchTerms, birdName):
     # create data/xeno-canto-dataset directory
-    path = save_json(searchTerms)
+    path = save_json(searchTerms, birdName)
     # get filenames: recording ID and bird name in latin from json
     filenamesID = read_data('id', path)
-    filenamesGen = read_data('gen', path)
+    filenamesCountry = read_data('cnt', path)
     # get website recording http download address from json
     fileaddress = read_data('file', path)
     numfiles=len(filenamesID)
     print("A total of ",numfiles," files will be downloaded")
     for i in range(0, numfiles):
-        print("Saving file ", i, "/", numfiles, ": " + filenamesGen[i]+filenamesID[i]+".mp3")
-        urllib.request.urlretrieve("http:"+fileaddress[i],path+"/"+filenamesGen[i]+filenamesID[i]+".mp3")
+        print("Saving file ", i+1, "/", numfiles, ": data/xeno-canto-dataset/" + birdName + filenamesCountry[i]+filenamesID[i]+".mp3")
+        urllib.request.urlretrieve("http:"+fileaddress[i],path+"/"+birdName+filenamesCountry[i]+filenamesID[i]+".mp3")
+
 
 def main(argv):
-    countries = ['poland', 'germany', 'slovakia', 'czech', 'lithuania']
-    birds = ['Emberiza citrinella',
-             'Parus major',
-             'Phylloscopus collybita',
-             'Sylvia atricapilla',
-             'Acrocephalus arundinaceus']
-    # find all bird songs from all listed countries for all listed bird types
+    countries = ['Poland', 'Germany', 'Slovakia', 'Czech', 'Lithuania']
+    birds = ['Emberiza Citrinella',
+             'Parus Major',
+             'Phylloscopus Collybita',
+             'Sylvia Atricapilla',
+             'Acrocephalus Arundinaceus']
     for country in range(len(countries)):
         for bird in range(len(birds)):
-            download(birds[bird]+' cnt:'+countries[country]+' type:song') # create a query
+            download(birds[bird]+' cnt:'+countries[country]+' type:song', birds[bird].replace(' ',''))
 
 
 if __name__ == "__main__":
