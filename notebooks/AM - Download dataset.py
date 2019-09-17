@@ -1,9 +1,6 @@
 #!/usr/bin/env/python
 #
 # A script to download bird sound files from the www.xeno-canto.org archives with metadata
-#
-# Usage: python scr/data/xcdl.py searchTerm1 searchTerm2 ... searchTermN
-#
 # The program downloads all the files found with the search terms into
 # subdirectory data/xeno-canto-dataset/searchTerm.
 # and corresponding json files.
@@ -92,6 +89,7 @@ def download(searchTerms, birdName):
 
 
 def main(argv):
+    # download all sounds type song, from bird list recorded in selected countries 
     countries = ['Poland', 'Germany', 'Slovakia', 'Czech', 'Lithuania']
     birds = ['Emberiza Citrinella',
              'Parus Major',
