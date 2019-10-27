@@ -25,7 +25,7 @@ def save_json(searchTerms, birdName):
     numPages=1
     page=1;
     #create a path to save json files and recordings
-    path = "data/xeno-canto-dataset/" + birdName.replace(':',' ')
+    path = "data/xeno-canto-dataset/" + birdName.replace(':','')
     if not os.path.exists(path):
         print("Creating subdirectory " + path + " for downloaded files...")
         os.makedirs(path)
@@ -84,7 +84,7 @@ def download(searchTerms, birdName):
     numfiles=len(filenamesID)
     print("A total of ",numfiles," files will be downloaded")
     for i in range(0, numfiles):
-        print("Saving file ", i+1, "/", numfiles, ": data/xeno-canto-dataset/" + birdName + filenamesCountry[i]+filenamesID[i]+".mp3")
+        print("Saving file ", i+1, "/", numfiles, ": data/xeno-canto-dataset/" + birdName.replace(':','') + filenamesCountry[i]+filenamesID[i]+".mp3")
         urllib.request.urlretrieve("http:"+fileaddress[i],path+"/"+birdName+filenamesCountry[i]+filenamesID[i]+".mp3")
 
 
